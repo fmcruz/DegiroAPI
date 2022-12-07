@@ -81,7 +81,7 @@ class DeGiro:
         headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                                 "Chrome/108.0.0.0 Safari/537.36"
         if request_type == DeGiro.__DELETE_REQUEST:
-            response = requests.delete(url, headers=headers, json=payload)
+            response = requests.delete(url, json=payload)
         elif request_type == DeGiro.__GET_REQUEST and cookie:
             response = requests.get(url, headers=headers, cookies=cookie)
         elif request_type == DeGiro.__GET_REQUEST:

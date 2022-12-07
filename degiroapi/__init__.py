@@ -78,7 +78,7 @@ class DeGiro:
                   error_message='An error occurred.'):
         if not headers:
             headers = {}
-            headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
+        headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                                 "Chrome/108.0.0.0 Safari/537.36"
         if request_type == DeGiro.__DELETE_REQUEST:
             response = requests.delete(url, headers=headers, json=payload)

@@ -76,17 +76,20 @@ class DeGiro:
     @staticmethod
     def __request(url, cookie=None, payload=None, headers=None, data=None, post_params=None, request_type=__GET_REQUEST,
                   error_message='An error occurred.'):
+        headersParam = False
         if not headers:
             headers = {}
+        else:
+            headersParam = True
         headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                                 "Chrome/108.0.0.0 Safari/537.36"
         if request_type == DeGiro.__DELETE_REQUEST:
-            response = requests.delete(url, json=payload)
+            response = requests.delete(url, headers=headers, json=payload)
         elif request_type == DeGiro.__GET_REQUEST and cookie:
             response = requests.get(url, headers=headers, cookies=cookie)
         elif request_type == DeGiro.__GET_REQUEST:
             response = requests.get(url, headers=headers, params=payload)
-        elif request_type == DeGiro.__POST_REQUEST and headers and data:
+        elif request_type == DeGiro.__POST_REQUEST and headersParam and data:
             response = requests.post(url, headers=headers, params=payload, data=data)
         elif request_type == DeGiro.__POST_REQUEST and post_params:
             response = requests.post(url, headers=headers, params=post_params, json=payload)
@@ -135,6 +138,7 @@ class DeGiro:
         }
         return self.__request(DeGiro.__TRANSACTIONS_URL, None, transactions_payload,
                               error_message='Could not get transactions.')['data']
+
 
     def orders(self, from_date, to_date, not_executed=None):
         orders_payload = {
@@ -246,7 +250,7 @@ class DeGiro:
 
     def buyorder(self, orderType, productId, timeType, size, limit=None, stop_loss=None):
         place_buy_order_params = {
-            'intAccount': self.client_info.account_id,
+            'intAccount': str(self.client_info.account_id),
             'sessionId': self.session_id,
         }
         place_buy_order_payload = {
@@ -279,7 +283,7 @@ class DeGiro:
 
     def sellorder(self, orderType, productId, timeType, size, limit=None, stop_loss=None):
         place_sell_order_params = {
-            'intAccount': self.client_info.account_id,
+            'intAccount': str(self.client_info.account_id),
             'sessionId': self.session_id,
         }
         place_sell_order_payload = {
